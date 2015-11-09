@@ -1,6 +1,10 @@
 package ar.edu.uces.progweb2.agenda.daoImpl;
 
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
@@ -24,10 +28,15 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T>{
 	}
 	
 	@SuppressWarnings("unchecked")
+	public GenericDaoImpl() {
+		this.persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public T getById(Long id) {
 		Session session = sessionFactory.getCurrentSession();
-		return (T) session.get(this.persistentClass, id);
+		return (T) session.get(this.persistentClass.getName(), id);
 	}
 	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -54,8 +63,16 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T>{
 	@Override
 	public Long getCount() {
 		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(this.persistentClass);
+		Criteria criteria = session.createCriteria(this.persistentClass.getName());
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findAll() {
+		Session session = sessionFactory.getCurrentSession(); 
+		Query query = session.createQuery("FROM "+this.persistentClass.getName());
+		return (List<T>) query.list();
 	}
 	
 }

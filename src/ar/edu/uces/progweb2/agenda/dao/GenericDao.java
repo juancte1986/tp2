@@ -1,5 +1,7 @@
 package ar.edu.uces.progweb2.agenda.dao;
 
+import java.util.List;
+
 
 public abstract interface GenericDao <T> {
 
@@ -12,5 +14,7 @@ public abstract interface GenericDao <T> {
 	public Long getCount();
 
 	public T getById(Long id);
+	
+	public List<T> findAll();
 	
 }

@@ -6,20 +6,21 @@ CREATE SCHEMA IF NOT EXISTS `appschema`;
 USE `appschema`;
 
 create table usuario (
-	id integer AUTO__INCREMENT not null,
+	id integer not null NULL AUTO_INCREMENT,
 	usuario varchar (50) not null,
 	contrasenia varchar (50) not null,
 	nombre varchar (50) not null,
 	apellido varchar (50) not null,
+	locale varchar (10) not null,
 	primary key (id)
 );
 
-insert into usuario (usuario, contrasenia, nombre, apellido) values('user1','1234','juan','pppp');
-insert into usuario (usuario, contrasenia, nombre, apellido) values('user2','1234','martin','pppp');
-insert into usuario (usuario, contrasenia, nombre, apellido) values('user3','1234','esteban','pppp');
+insert into usuario (usuario, contrasenia, nombre, apellido, locale) values('user1','1234','juan','pppp','es_ar');
+insert into usuario (usuario, contrasenia, nombre, apellido, locale) values('user2','1234','martin','pppp','es_ar');
+insert into usuario (usuario, contrasenia, nombre, apellido, locale) values('user3','1234','esteban','pppp','en_us');
 
 create table sala (
-	id integer AUTO_INCREMENT not null,
+	id integer not null AUTO_INCREMENT,
 	descripcion varchar (500) not null,
 	primary key (id)
 );
@@ -29,7 +30,7 @@ insert into sala (descripcion) values ('Los cardales');
 insert into sala (descripcion) values ('Principal');
 
 create table evento (
-	id integer AUTO_INCREMENT not null,
+	id integer not null AUTO_INCREMENT,
 	fecha DATETIME not null,
 	usuarioId integer not null,
 	horaInicio DATETIME not null,
@@ -49,6 +50,9 @@ create table reunion (
 	id integer not null,
 	tema varchar(500) not null,
 	salaId integer not null,
+	primary key(id),
+	FOREIGN KEY (salaId) REFERENCES sala(id)
+	
 );
 
 create table invitado (
@@ -59,4 +63,8 @@ create table invitado (
 	FOREIGN KEY (usuarioId) REFERENCES usuario(id),
 	FOREIGN KEY (reunionId) REFERENCES reunion(id)
 );
+
+GRANT ALL PRIVILEGES ON `appschema`.* TO 'jveron'@'localhost'
+  IDENTIFIED BY PASSWORD '*B04E11FAAAE9A5A019BAF695B40F3BF1997EB194';
+
 

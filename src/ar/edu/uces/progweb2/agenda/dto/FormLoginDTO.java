@@ -4,7 +4,7 @@ public class FormLoginDTO {
 	
 	private String user;
 	private String password;
-	private boolean remenber;
+	private boolean remember;
 
 	public String getUser() {
 		return user;
@@ -22,12 +22,12 @@ public class FormLoginDTO {
 		this.password = password;
 	}
 	
-	public boolean getRemenber() {
-		return remenber;
+	public boolean getRemember() {
+		return remember;
 	}
 
-	public void setRemenber(boolean remenber) {
-		this.remenber = remenber;
+	public void setRemember(boolean remember) {
+		this.remember = remember;
 	}
 
 }

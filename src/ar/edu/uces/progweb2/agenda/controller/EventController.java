@@ -4,11 +4,16 @@ import java.util.Date;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import ar.edu.uces.progweb2.agenda.dto.MeetingDTO;
+import ar.edu.uces.progweb2.agenda.dto.PrivateEventDTO;
 
 @SessionAttributes("user")
 @Controller
@@ -41,19 +46,40 @@ public class EventController {
 	
 	// sincronicos
 	
-	public String initNewEvent(){
-		return null;
+	@RequestMapping(value="/newEvent")
+	public String initNewEvent(@RequestParam("event") String event, ModelMap model){
+		if(event.equals("meeting")){
+			model.addAttribute("formMeeting", new MeetingDTO());
+			return "/jsp/meeting.jsp";
+		}
+		else if(event.equals("privateEvent")){
+			model.addAttribute("formPrivateEvent", new PrivateEventDTO());
+			return "/jsp/privateEvent.jsp";
+		}else{
+			model.addAttribute("error",true);
+			return "/jsp/calendar.jsp";
+		}
 	}
 	
-	public String saveNewEvent(){
+	@RequestMapping(value="/saveMeeting")
+	public String saveMeeting(@ModelAttribute("formMeeting") MeetingDTO metting){
 		return "/jsp/calendar.jsp";
 	}
 	
-	public String initEvent(){
+	@RequestMapping(value="/savePrivateEvent")
+	public String savePrivateEvent(@ModelAttribute("formPrivateEvent") PrivateEventDTO privateEvent){
+		return "/jsp/calendar.jsp";
+	}
+	
+	public String detailEvent(){
 		return null;
 	}
 	
-	public String updateEvent(){
+	public String updateMeeting(){
+		return "/jsp/calendar.jsp";
+	}
+	
+	public String updatePrivateEvent(){
 		return "/jsp/calendar.jsp";
 	}
 	
